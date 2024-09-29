@@ -30,3 +30,15 @@
 *.exe
 *.out
 *.app
+
+# IDE
+.vs/
+.idea/
+.vscode/
+/Debug/
+/Release/
+/build/
+
+# Ignore x64 and x86 build folders
+x64/
+x86/

@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{bc4b84bc-c0f9-41e7-9e26-9ff8a821d783}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{b4dbb083-d61c-4ab0-a350-647ff852f7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Panel">
+      <UniqueIdentifier>{97b9149d-bc7f-47bc-a0ed-ec3e6bb71361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commander">
+      <UniqueIdentifier>{48636543-9eb7-465b-984d-5581e6cfdc01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{095fd96d-449c-43da-9b50-3b6fbe41d9cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Asm_Tools">
+      <UniqueIdentifier>{a6a17e37-24bc-4932-9598-f938a8ae5aaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Panel\Bottom_Panel">
+      <UniqueIdentifier>{42af12f3-f68b-4628-9abf-7a3f48d2e3a3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="Commander.cpp">
+      <Filter>Commander</Filter>
+    </ClCompile>
+    <ClCompile Include="Common.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Bottom_Panel.cpp">
+      <Filter>Panel\Bottom_Panel</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Main.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="Commander.h">
+      <Filter>Commander</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Asm_Tools_Interface.h">
+      <Filter>Asm_Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Bottom_Panel.h">
+      <Filter>Panel\Bottom_Panel</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <MASM Include="Asm_Tools.asm">
+      <Filter>Asm_Tools</Filter>
+    </MASM>
+  </ItemGroup>
+</Project>

@@ -17,9 +17,10 @@ private:
 	bool Draw();
 	void Process_Input(INPUT_RECORD input_record);
 	void Process_Key_Event(KEY_EVENT_RECORD key_event_record);
+	void Switch_Panel(bool isRight);
 
-	bool Can_Run;
-	bool Can_Draw;
+	bool Can_Run = false;
+	bool Can_Draw = false;
 
 	HANDLE Screen_Buffer_Handle = 0;
 	HANDLE Std_Output_Handle = 0;

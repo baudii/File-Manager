@@ -15,10 +15,15 @@ AFile_Data::AFile_Data(const wchar_t* file_name, unsigned int attribute, unsigne
 
 // APanel
 //--------------------------------------------------------------------------------------------------------------
-APanel::APanel(CHAR_INFO* screen_buffer, unsigned short screen_width, unsigned short x_pos, unsigned short y_pos, unsigned short width, unsigned short height)
-	: Screen_Buffer(screen_buffer), Screen_Width(screen_width), X_Pos(x_pos), Y_Pos(y_pos), Width(width), Height(height), Pointer(0)
+APanel::APanel(CHAR_INFO* screen_buffer, unsigned short screen_width, unsigned short x_pos, unsigned short y_pos, unsigned short width, unsigned short height, bool is_right, bool is_panel_active)
+	: Screen_Buffer(screen_buffer), Screen_Width(screen_width), X_Pos(x_pos), Y_Pos(y_pos), Width(width), Height(height), Pointer(0), Is_Panel_Active(is_panel_active)
 {
 	Max_Visible_Elements = (Height - 5) * 2;
+	Highlight_X_Offset = 0;
+	Highlight_Y_Offset = 0;
+	Text_Limit_Offset = 0;
+	if (is_right)
+		Text_Limit_Offset = 1;
 }
 //--------------------------------------------------------------------------------------------------------------
 void APanel::Draw()
@@ -89,6 +94,11 @@ void APanel::Open_Highlighted_Dir()
 	AFile_Data* file = Files[Pointer];
 	if (file->Attribute & FILE_ATTRIBUTE_DIRECTORY)
 		Get_Files(Current_Path + L"\\" + file->File_Name);
+}
+//--------------------------------------------------------------------------------------------------------------
+void APanel::Panel_Set_Active(bool is_active)
+{
+	Is_Panel_Active = is_active;
 }
 //--------------------------------------------------------------------------------------------------------------
 void APanel::Draw_Panels()
@@ -197,7 +207,12 @@ void APanel::Highlight_File()
 			return;
 	}
 
-	Draw_One_File(file, x_offset, y_offset, 0x80);
+	Highlight_X_Offset = x_offset;
+	Highlight_Y_Offset = y_offset;
+	if (Is_Panel_Active)
+		Draw_One_File(file, x_offset, y_offset, 0x80);
+	else
+		Draw_One_File(file, x_offset, y_offset, 0x90);
 }
 //--------------------------------------------------------------------------------------------------------------
 void APanel::Draw_One_File(AFile_Data* file, int x_offset, int y_offset, unsigned short bg_color)
@@ -208,6 +223,6 @@ void APanel::Draw_One_File(AFile_Data* file, int x_offset, int y_offset, unsigne
 	else
 		attribute = 0x0b | bg_color;
 	SText_Data text_data(X_Pos + x_offset + 1, Y_Pos + y_offset + 2, Screen_Width, attribute);
-	Draw_Limited_Text(Screen_Buffer, text_data, file->File_Name.c_str(), Width / 2 - 1);
+	Draw_Limited_Text(Screen_Buffer, text_data, file->File_Name.c_str(), Width / 2 - 1 - Text_Limit_Offset);
 }
 //--------------------------------------------------------------------------------------------------------------

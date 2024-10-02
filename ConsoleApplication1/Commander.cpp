@@ -21,7 +21,7 @@ bool AsCommander::Init()
 	int screen_buffer_size;
 
 	wchar_t cur_dir[MAX_PATH];
-	
+
 	GetCurrentDirectoryW(MAX_PATH, cur_dir);
 
 
@@ -56,8 +56,8 @@ bool AsCommander::Init()
 
 	// Setup panels
 	Bottom_Panel = new AsBottom_Panel(Screen_Buffer, Screen_Buffer_Info.dwSize.X, 0, Screen_Buffer_Info.dwSize.Y - 1);
-	Left_Panel = new APanel(Screen_Buffer, Screen_Buffer_Info.dwSize.X, 0, 0, Screen_Buffer_Info.dwSize.X / 2, Screen_Buffer_Info.dwSize.Y - 2);
-	Right_Panel = new APanel(Screen_Buffer, Screen_Buffer_Info.dwSize.X, Screen_Buffer_Info.dwSize.X / 2, 0, Screen_Buffer_Info.dwSize.X / 2, Screen_Buffer_Info.dwSize.Y - 2);
+	Left_Panel = new APanel(Screen_Buffer, Screen_Buffer_Info.dwSize.X, 0, 0, Screen_Buffer_Info.dwSize.X / 2, Screen_Buffer_Info.dwSize.Y - 2, false, true);
+	Right_Panel = new APanel(Screen_Buffer, Screen_Buffer_Info.dwSize.X, Screen_Buffer_Info.dwSize.X / 2, 0, Screen_Buffer_Info.dwSize.X / 2, Screen_Buffer_Info.dwSize.Y - 2, true, false);
 
 	Left_Panel->Get_Files(cur_dir);
 	Right_Panel->Get_Files(cur_dir);
@@ -89,7 +89,7 @@ void AsCommander::Run()
 				}
 			}
 		}
-		
+
 		if (Can_Draw)
 		{
 			if (!Draw())
@@ -119,11 +119,9 @@ bool AsCommander::Draw()
 //--------------------------------------------------------------------------------------------------------------
 void AsCommander::Process_Input(INPUT_RECORD input_record)
 {
-	switch (input_record.EventType)
+	if (input_record.EventType == KEY_EVENT)
 	{
-		case (KEY_EVENT):
-			Process_Key_Event(input_record.Event.KeyEvent);
-			break;
+		Process_Key_Event(input_record.Event.KeyEvent);
 	}
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -133,25 +131,49 @@ void AsCommander::Process_Key_Event(KEY_EVENT_RECORD key_event_record)
 	{
 		switch (key_event_record.wVirtualKeyCode)
 		{
-			case (VK_DOWN):
-				Left_Panel->Move_Highlight(false);
-				Can_Draw = true;
-				break;
+		case (VK_DOWN):
+			Current_Panel->Move_Highlight(false);
+			Can_Draw = true;
+			break;
 
-			case (VK_UP):
-				Left_Panel->Move_Highlight(true);
-				Can_Draw = true;
-				break;
+		case (VK_UP):
+			Current_Panel->Move_Highlight(true);
+			Can_Draw = true;
+			break;
 
-			case (VK_RETURN):
-				Left_Panel->Open_Highlighted_Dir();
-				Can_Draw = true;
-				break;
+		case (VK_RETURN):
+			Current_Panel->Open_Highlighted_Dir();
+			Can_Draw = true;
+			break;
 
-			case (VK_F10):
-				Can_Run = false;
-				break;
+		case (VK_F10):
+			Can_Run = false;
+			break;
+
+		case (VK_RIGHT):
+			Switch_Panel(true);
+			Can_Draw = true;
+			break;
+
+		case (VK_LEFT):
+			Switch_Panel(false);
+			Can_Draw = true;
+			break;
 		}
 	}
+}
+//--------------------------------------------------------------------------------------------------------------
+void AsCommander::Switch_Panel(bool is_right)
+{
+	Current_Panel->Panel_Set_Active(false);
+	if (is_right)
+	{
+		Current_Panel = Right_Panel;
+	}
+	else
+	{
+		Current_Panel = Left_Panel;
+	}
+	Current_Panel->Panel_Set_Active(true);
 }
 //--------------------------------------------------------------------------------------------------------------

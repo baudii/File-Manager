@@ -73,14 +73,14 @@ void APanel::Move_Highlight(bool is_up)
 	}
 	else
 	{
-		if (Pointer < Max_Visible_Elements && Pointer < (Files.size() - 1))
+		if (Pointer + 2 < Max_Visible_Elements - 1 && Pointer < (Files.size() - 1))
 			Pointer++;
 	}
 }
 //--------------------------------------------------------------------------------------------------------------
 void APanel::Move_Highlight(int pointer)
 {
-	if (pointer >  0 && pointer < Min(Max_Visible_Elements, Files.size() - 1))
+	if (pointer > 0 && pointer < Min(Max_Visible_Elements, Files.size() - 1))
 		Pointer = pointer;
 }
 //--------------------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ void APanel::Draw_Files()
 	int x_offset = 0;
 	int y_offset = 0;
 
-	for (auto *file : Files)
+	for (auto* file : Files)
 	{
 		if (Files.size() > 0 && Files[0]->File_Size > 100000)
 		{
@@ -154,7 +154,7 @@ void APanel::Draw_Files()
 
 		if (Y_Pos + y_offset + 2 > Max_Visible_Elements / 2)
 		{
-			if (X_Pos == 0)
+			if (x_offset == 0)
 			{
 				x_offset = Width / 2;
 				y_offset = 0;
@@ -167,7 +167,7 @@ void APanel::Draw_Files()
 //--------------------------------------------------------------------------------------------------------------
 void APanel::Highlight_File()
 {
-	if (Files.size() == 0 || Pointer >= Files.size())
+	if (Files.size() == 0 || Pointer >= Files.size() || Pointer >= Max_Visible_Elements - 1)
 		return;
 
 	AFile_Data* file;
@@ -177,18 +177,20 @@ void APanel::Highlight_File()
 	file = Files[Pointer];
 
 	x_offset = 0;
-	y_offset = Y_Pos + Pointer;
+	y_offset = Pointer;
 
-	if (Y_Pos + Pointer + 2 > Max_Visible_Elements / 2)
+	if (Pointer + 2 > Max_Visible_Elements / 2)
 	{
-		if (X_Pos == 0)
+		if (x_offset == 0)
 		{
 			x_offset = Width / 2;
-			if (Y_Pos + Pointer + 2 > Max_Visible_Elements)
+			if (Pointer + 3 > Max_Visible_Elements)
+			{
 				return;
+			}
 			else
 			{
-				y_offset = Y_Pos + Pointer - (Max_Visible_Elements / 2);
+				y_offset = Pointer - (Max_Visible_Elements - 1) / 2;
 			}
 		}
 		else
